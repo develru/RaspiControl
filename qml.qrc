@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>WeatherPage.qml</file>
+        <file>CameraPage.qml</file>
     </qresource>
 </RCC>
