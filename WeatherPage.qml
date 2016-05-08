@@ -3,6 +3,6 @@ import QtQuick.Controls 1.3
 
 Item {
     Label {
-        text: "Weather"
+        text: weather.label
     }
 }
