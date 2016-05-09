@@ -2,6 +2,9 @@
 #define WEATHER_H
 
 #include <QObject>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+
 
 namespace weather {
 
@@ -12,10 +15,15 @@ class Weather : public QObject
 public:
     explicit Weather(QObject *parent = 0);
     QString label() const {return m_label;}
-    QString getWeatherData();
+    Q_INVOKABLE void requestWeatherData();
+
+public slots:
+    void weatherDataRecived(QNetworkReply* networkReply);
 
 private:
     QString m_label;
+    QNetworkAccessManager* m_manager;
+    QString m_apiKey;
 };
 
 }
