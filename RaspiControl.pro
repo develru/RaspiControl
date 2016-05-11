@@ -5,7 +5,8 @@ QT += qml quick widgets
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    src/weather/weather.cpp
+    src/weather/weather.cpp \
+    src/weather/weatherdata.cpp
 
 RESOURCES += qml.qrc \
     appres.qrc
@@ -21,4 +22,5 @@ linux-rasp-pi2-g++ {
 include(deployment.pri)
 
 HEADERS += \
-    src/weather/weather.h
+    src/weather/weather.h \
+    src/weather/weatherdata.h
