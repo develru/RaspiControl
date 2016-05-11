@@ -1,5 +1,7 @@
 #include <QDebug>
 #include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QTextStream>
 #include "weather.h"
 using namespace weather;
@@ -7,7 +9,8 @@ using namespace weather;
 Weather::Weather(QObject *parent) :
     QObject(parent),
     m_label("Hello Richard!"),
-    m_manager(new QNetworkAccessManager(this))
+    m_manager(new QNetworkAccessManager(this)),
+    m_weatherData(new WeatherData())
 {
     connect(m_manager.get(), SIGNAL(finished(QNetworkReply*)),
             this, SLOT(weatherDataRecived(QNetworkReply*)));
@@ -20,14 +23,34 @@ Weather::Weather(QObject *parent) :
     }
 }
 
+Weather::~Weather()
+{
+    delete m_weatherData;
+}
+
+QString Weather::location() const
+{
+    return QString::fromStdString(m_weatherData->locationName());
+}
+
 void Weather::requestWeatherData()
 {
-    QString apiCall = QString("http://api.openweathermap.org/data/2.5/weather?q=Dachau,de&APPID=%1").arg(m_apiKey);
+    QString apiCall =
+            QString("http://api.openweathermap.org/data/2.5/weather?q=Dachau,de&units=metrics&APPID=%1").arg(m_apiKey);
     m_manager->get(QNetworkRequest(QUrl(apiCall)));
 }
 
 void Weather::weatherDataRecived(QNetworkReply* networkReply)
 {
-    qDebug() << QString(networkReply->readAll());
+    QString jsonStr(networkReply->readAll());
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonStr.toStdString().c_str());
+    readData(jsonDoc.object());
     networkReply->deleteLater();
+}
+
+void Weather::readData(const QJsonObject &jsonObj)
+{
+    std::string name = jsonObj["name"].toString().toStdString();
+    m_weatherData->setLocationName(name);
+    emit weatherChanged();
 }
