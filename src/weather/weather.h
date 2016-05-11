@@ -1,6 +1,7 @@
 #ifndef WEATHER_H
 #define WEATHER_H
 
+#include <memory>
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -22,7 +23,8 @@ public slots:
 
 private:
     QString m_label;
-    QNetworkAccessManager* m_manager;
+    std::unique_ptr<QNetworkAccessManager> m_manager;
+//    QNetworkAccessManager* m_manager;
     QString m_apiKey;
 };
 

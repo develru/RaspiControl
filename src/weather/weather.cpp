@@ -9,7 +9,7 @@ Weather::Weather(QObject *parent) :
     m_label("Hello Richard!"),
     m_manager(new QNetworkAccessManager(this))
 {
-    connect(m_manager, SIGNAL(finished(QNetworkReply*)),
+    connect(m_manager.get(), SIGNAL(finished(QNetworkReply*)),
             this, SLOT(weatherDataRecived(QNetworkReply*)));
 
     QFile apiFile(":/res/api.txt");
