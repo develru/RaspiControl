@@ -11,6 +11,14 @@ Item {
         }
 
         Label {
+            text: weather.temp
+        }
+
+        Label {
+            text: weather.description
+        }
+
+        Label {
             text: weather.location
         }
     }

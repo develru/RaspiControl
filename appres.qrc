@@ -2,7 +2,4 @@
     <qresource prefix="/res">
         <file>api.txt</file>
     </qresource>
-    <qresource prefix="/">
-        <file>ButtonStyle.qml</file>
-    </qresource>
 </RCC>

@@ -12,13 +12,17 @@ namespace weather {
 class Weather : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString label READ label)
     Q_PROPERTY(QString location READ location NOTIFY weatherChanged)
+    Q_PROPERTY(QString description READ description NOTIFY weatherChanged)
+    Q_PROPERTY(QString temp READ temp NOTIFY weatherChanged)
+
 public:
     explicit Weather(QObject *parent = 0);
 //    ~Weather();
-    QString label() const {return m_label;}
+
     QString location() const;
+    QString description() const;
+    QString temp() const;
     Q_INVOKABLE void requestWeatherData();
 
 signals:
@@ -30,7 +34,6 @@ public slots:
 private:
     void readData(const QJsonObject& jsonObj);
 
-    QString m_label;
     std::unique_ptr<QNetworkAccessManager> m_manager;
 //    QNetworkAccessManager* m_manager;
     QString m_apiKey;

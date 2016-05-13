@@ -2,13 +2,13 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QTextStream>
 #include "weather.h"
 using namespace weather;
 
 Weather::Weather(QObject *parent) :
     QObject(parent),
-    m_label("Hello Richard!"),
     m_manager(new QNetworkAccessManager(this)),
     m_weatherData(new WeatherData())
 {
@@ -31,6 +31,16 @@ Weather::Weather(QObject *parent) :
 QString Weather::location() const
 {
     return QString::fromStdString(m_weatherData->locationName());
+}
+
+QString Weather::description() const
+{
+    return QString::fromStdString(m_weatherData->description());
+}
+
+QString Weather::temp() const
+{
+    return QString(m_weatherData->temperature());
 }
 
 void Weather::requestWeatherData()
@@ -58,5 +68,9 @@ void Weather::readData(const QJsonObject &jsonObj)
     int temp = jsonObj["main"].toObject()["temp"].toInt();
     m_weatherData->setTemperature(temp);
 
+    // description
+    QJsonArray jsonA = jsonObj["weather"].toArray();
+    std::string desc = jsonA[0].toObject()["description"].toString().toStdString();
+    m_weatherData->setDescription(desc);
     emit weatherChanged();
 }
