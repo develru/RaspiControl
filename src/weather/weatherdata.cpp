@@ -17,6 +17,8 @@ std::string WeatherData::locationName() const
 
 void WeatherData::setLocationName(const std::string &locationName)
 {
+    if (!m_isDataRecived)
+        m_isDataRecived = true;
     m_locationName = locationName;
 }
 
@@ -27,6 +29,8 @@ int WeatherData::temperature() const
 
 void WeatherData::setTemperature(int temperature)
 {
+    if (!m_isDataRecived)
+        m_isDataRecived = true;
     m_temperature = temperature;
 }
 
@@ -37,15 +41,12 @@ std::string WeatherData::description() const
 
 void WeatherData::setDescription(const std::string &description)
 {
+    if (!m_isDataRecived)
+        m_isDataRecived = true;
     m_description = description;
 }
 
 bool WeatherData::isDataRecived() const
 {
     return m_isDataRecived;
-}
-
-void WeatherData::setIsDataRecived(bool isDataRecived)
-{
-    m_isDataRecived = isDataRecived;
 }

@@ -20,7 +20,6 @@ public:
     void setDescription(const std::string &description);
 
     bool isDataRecived() const;
-    void setIsDataRecived(bool isDataRecived);
 
 private:
     bool m_isDataRecived;

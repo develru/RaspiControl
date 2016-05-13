@@ -23,10 +23,10 @@ Weather::Weather(QObject *parent) :
     }
 }
 
-Weather::~Weather()
-{
-    delete m_weatherData;
-}
+//Weather::~Weather()
+//{
+//    delete m_weatherData;
+//}
 
 QString Weather::location() const
 {
@@ -50,7 +50,13 @@ void Weather::weatherDataRecived(QNetworkReply* networkReply)
 
 void Weather::readData(const QJsonObject &jsonObj)
 {
+    // location
     std::string name = jsonObj["name"].toString().toStdString();
     m_weatherData->setLocationName(name);
+
+    // temperature
+    int temp = jsonObj["main"].toObject()["temp"].toInt();
+    m_weatherData->setTemperature(temp);
+
     emit weatherChanged();
 }

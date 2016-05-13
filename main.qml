@@ -1,12 +1,12 @@
 import QtQuick 2.4
 import QtQuick.Controls 1.3
 
+
 ApplicationWindow {
     visible: true
     width: 800
     height: 480
     title: qsTr("Pi control")
-
 
     //    menuBar: MenuBar {
     //        Menu {
@@ -58,6 +58,7 @@ ApplicationWindow {
                 Button {
                     height: 50
                     text: qsTr("Weather")
+                    style: ButtonStyle {}
                     onClicked: stackView.push(Qt.resolvedUrl("/WeatherPage.qml"))
                 }
 

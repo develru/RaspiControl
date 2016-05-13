@@ -16,7 +16,7 @@ class Weather : public QObject
     Q_PROPERTY(QString location READ location NOTIFY weatherChanged)
 public:
     explicit Weather(QObject *parent = 0);
-    ~Weather();
+//    ~Weather();
     QString label() const {return m_label;}
     QString location() const;
     Q_INVOKABLE void requestWeatherData();
@@ -34,7 +34,8 @@ private:
     std::unique_ptr<QNetworkAccessManager> m_manager;
 //    QNetworkAccessManager* m_manager;
     QString m_apiKey;
-    WeatherData* m_weatherData;
+    std::unique_ptr<WeatherData> m_weatherData;
+//    WeatherData* m_weatherData;
 
 };
 

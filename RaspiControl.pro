@@ -24,3 +24,5 @@ include(deployment.pri)
 HEADERS += \
     src/weather/weather.h \
     src/weather/weatherdata.h
+
+DISTFILES +=
