@@ -3,12 +3,9 @@ import QtQuick.Controls 1.3
 
 Item {
     Column {
+        Component.onCompleted: weather.requestWeatherData()
         anchors.centerIn: parent
         spacing: 15
-        Button {
-            text: "Get Weather Data"
-            onClicked: weather.requestWeatherData()
-        }
 
         Label {
             text: weather.temp
@@ -22,4 +19,9 @@ Item {
             text: weather.location
         }
     }
+
+    //        Button {
+    //            text: "Get Weather Data"
+    //            onClicked: weather.requestWeatherData()
+    //        }
 }

@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QTextStream>
+#include <cmath>
 #include "weather.h"
 using namespace weather;
 
@@ -40,13 +41,13 @@ QString Weather::description() const
 
 QString Weather::temp() const
 {
-    return QString(m_weatherData->temperature());
+    return QString::number(m_weatherData->temperature());
 }
 
 void Weather::requestWeatherData()
 {
     QString apiCall =
-            QString("http://api.openweathermap.org/data/2.5/weather?q=Dachau,de&units=metrics&APPID=%1").arg(m_apiKey);
+            QString("http://api.openweathermap.org/data/2.5/weather?q=Dachau,de&units=metric&APPID=%1").arg(m_apiKey);
     m_manager->get(QNetworkRequest(QUrl(apiCall)));
 }
 
@@ -65,6 +66,8 @@ void Weather::readData(const QJsonObject &jsonObj)
     m_weatherData->setLocationName(name);
 
     // temperature
+//    double tDo = jsonObj["main"].toObject()["temp"].toDouble();
+//    int temp = static_cast<int>(std::round(tDo));
     int temp = jsonObj["main"].toObject()["temp"].toInt();
     m_weatherData->setTemperature(temp);
 
