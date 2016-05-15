@@ -21,11 +21,15 @@ public:
 
     bool isDataRecived() const;
 
+    std::string icon() const;
+    void setIcon(const std::string &icon);
+
 private:
     bool m_isDataRecived;
     std::string m_locationName;
     int m_temperature;
     std::string m_description;
+    std::string m_icon;
 };
 
 }

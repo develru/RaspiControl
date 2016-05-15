@@ -15,6 +15,7 @@ class Weather : public QObject
     Q_PROPERTY(QString location READ location NOTIFY weatherChanged)
     Q_PROPERTY(QString description READ description NOTIFY weatherChanged)
     Q_PROPERTY(QString temp READ temp NOTIFY weatherChanged)
+    Q_PROPERTY(QString icon READ icon NOTIFY weatherChanged)
 
 public:
     explicit Weather(QObject *parent = 0);
@@ -23,6 +24,7 @@ public:
     QString location() const;
     QString description() const;
     QString temp() const;
+    QString icon() const;
     Q_INVOKABLE void requestWeatherData();
 
 signals:

@@ -44,6 +44,11 @@ QString Weather::temp() const
     return QString::number(m_weatherData->temperature());
 }
 
+QString Weather::icon() const
+{
+    return QString::fromStdString(m_weatherData->icon());
+}
+
 void Weather::requestWeatherData()
 {
     QString apiCall =
@@ -66,14 +71,19 @@ void Weather::readData(const QJsonObject &jsonObj)
     m_weatherData->setLocationName(name);
 
     // temperature
-//    double tDo = jsonObj["main"].toObject()["temp"].toDouble();
-//    int temp = static_cast<int>(std::round(tDo));
-    int temp = jsonObj["main"].toObject()["temp"].toInt();
+    double tDo = jsonObj["main"].toObject()["temp"].toDouble();
+    int temp = static_cast<int>(std::round(tDo));
+//    int temp = jsonObj["main"].toObject()["temp"].toInt();
     m_weatherData->setTemperature(temp);
 
     // description
     QJsonArray jsonA = jsonObj["weather"].toArray();
     std::string desc = jsonA[0].toObject()["description"].toString().toStdString();
     m_weatherData->setDescription(desc);
+
+    // icon
+    std::string icon = jsonA[0].toObject()["icon"].toString().toStdString();
+    QString tempIcon = QString("qrc:/img/weather_img/%1.png").arg(QString::fromStdString(icon));
+    m_weatherData->setIcon(tempIcon.toStdString());
     emit weatherChanged();
 }

@@ -7,21 +7,30 @@ Item {
         anchors.centerIn: parent
         spacing: 15
 
+        Image {
+            source: weather.icon
+            height: 200
+            width: 200
+//            antialiasing: true
+        }
         Label {
-            text: weather.temp
+            text: weather.temp + "°C"
+            font.bold: true
+            font.pointSize: 22
+            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Label {
             text: weather.description
+            font.pointSize: 18
+            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Label {
             text: weather.location
+            font.italic: true
+            font.pointSize: 18
+            anchors.horizontalCenter: parent.horizontalCenter
         }
     }
-
-    //        Button {
-    //            text: "Get Weather Data"
-    //            onClicked: weather.requestWeatherData()
-    //        }
 }
