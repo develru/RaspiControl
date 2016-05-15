@@ -3,7 +3,8 @@ import QtQuick.Controls 1.3
 
 Item {
     Column {
-        Component.onCompleted: weather.requestWeatherData()
+        Component.onCompleted: weather.viewIsReaddy()
+        Component.onDestruction: weather.stopTimer()
         anchors.centerIn: parent
         spacing: 15
 

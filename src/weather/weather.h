@@ -5,6 +5,7 @@
 #include <QtCore/QObject>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
+#include <QtCore/QTimer>
 #include "weatherdata.h"
 
 namespace weather {
@@ -25,22 +26,26 @@ public:
     QString description() const;
     QString temp() const;
     QString icon() const;
-    Q_INVOKABLE void requestWeatherData();
-
+    Q_INVOKABLE void viewIsReaddy();
+    Q_INVOKABLE void stopTimer();
+    
 signals:
     void weatherChanged();
 
 public slots:
     void weatherDataRecived(QNetworkReply* networkReply);
+    void updateWeather();
 
 private:
     void readData(const QJsonObject& jsonObj);
+    void requestWeatherData();
 
     std::unique_ptr<QNetworkAccessManager> m_manager;
 //    QNetworkAccessManager* m_manager;
     QString m_apiKey;
     std::unique_ptr<WeatherData> m_weatherData;
 //    WeatherData* m_weatherData;
+    std::unique_ptr<QTimer> m_timer;
 
 };
 

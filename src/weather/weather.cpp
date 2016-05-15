@@ -11,10 +11,13 @@ using namespace weather;
 Weather::Weather(QObject *parent) :
     QObject(parent),
     m_manager(new QNetworkAccessManager(this)),
-    m_weatherData(new WeatherData())
+    m_weatherData(new WeatherData()),
+    m_timer(new QTimer(this))
 {
     connect(m_manager.get(), SIGNAL(finished(QNetworkReply*)),
             this, SLOT(weatherDataRecived(QNetworkReply*)));
+
+    connect(m_timer.get(), SIGNAL(timeout()), this, SLOT(updateWeather()));
 
     QFile apiFile(":/res/api.txt");
     if (apiFile.open(QFile::ReadOnly)) {
@@ -86,4 +89,25 @@ void Weather::readData(const QJsonObject &jsonObj)
     QString tempIcon = QString("qrc:/img/weather_img/%1.png").arg(QString::fromStdString(icon));
     m_weatherData->setIcon(tempIcon.toStdString());
     emit weatherChanged();
+
+    qDebug() << "Weather data recived";
 }
+
+void Weather::updateWeather()
+{
+    requestWeatherData();
+    qDebug() << "Timeout: request new weather data";
+}
+
+void Weather::stopTimer()
+{
+    m_timer->stop();
+    qDebug() << "Stop Timer";
+}
+
+void Weather::viewIsReaddy()
+{
+    requestWeatherData();
+    m_timer->start(3600000);
+}
+
