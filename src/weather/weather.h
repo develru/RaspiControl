@@ -2,9 +2,9 @@
 #define WEATHER_H
 
 #include <memory>
-#include <QObject>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
+#include <QtCore/QObject>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 #include "weatherdata.h"
 
 namespace weather {

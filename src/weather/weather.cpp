@@ -1,9 +1,9 @@
-#include <QDebug>
-#include <QFile>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QTextStream>
+#include <QtCore/QDebug>
+#include <QtCore/QFile>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonArray>
+#include <QtCore/QTextStream>
 #include <cmath>
 #include "weather.h"
 using namespace weather;

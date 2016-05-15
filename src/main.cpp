@@ -1,7 +1,7 @@
-#include <QApplication>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include "src/weather/weather.h"
+#include <QtGui/QApplication>
+#include <QtQml/QQmlApplicationEngine>
+#include <QtQml/QQmlContext>
+#include "weather/weather.h"
 
 int main(int argc, char *argv[])
 {
