@@ -8,7 +8,14 @@ add_definitions(
         -Wall
 )
 
-set(CMAKE_PREFIX_PATH "/home/rschwalk/dev/tools/Qt/5.6/gcc_64/")
+
+IF(CMAKE_CROSSCOMPILING)
+    set(CMAKE_PREFIX_PATH /home/rschwalk/dev/tools/raspi/qt5pi/)
+    set(CMAKE_FIND_ROOT_PATH /home/rschwalk/dev/tools/raspi/qt5pi/)
+ENDIF(CMAKE_CROSSCOMPILING)
+IF(NOT CMAKE_CROSSCOMPILING)
+    set(CMAKE_PREFIX_PATH /home/rschwalk/dev/tools/Qt/5.6/gcc_64/)
+ENDIF(NOT CMAKE_CROSSCOMPILING)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)

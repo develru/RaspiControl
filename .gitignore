@@ -72,6 +72,6 @@ Thumbs.db
 *.exe
 
 api.txt
-build/
+build*/
 .ropeproject/
 *.txt.user*
