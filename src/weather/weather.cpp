@@ -117,10 +117,12 @@ void Weather::readData(const QJsonObject &jsonObj)
 
 void Weather::readForecastData(const QJsonObject& jsonObj)
 {
+    WeatherForecastData forecastData;
     QJsonArray jsonList = jsonObj["list"].toArray();
     QJsonObject jsonListObj = jsonList[0].toObject();
     // time
     int time = jsonListObj["dt"].toInt();
+    forecastData.setTime(time);
     QDateTime dt = QDateTime::fromTime_t(time);
     qDebug() << dt.toString();
 
@@ -128,6 +130,7 @@ void Weather::readForecastData(const QJsonObject& jsonObj)
     QJsonArray weatherArr = jsonListObj["weather"].toArray();
     QJsonObject weatherObject = weatherArr[0].toObject();
     std::string desc = weatherObject["description"].toString().toStdString();
+    forecastData.setDescription(desc);
     qDebug() << QString::fromStdString(desc);
 
     // max/min
@@ -135,8 +138,12 @@ void Weather::readForecastData(const QJsonObject& jsonObj)
     double tempMinD = temp["min"].toDouble();
     double tempMaxD = temp["max"].toDouble();
     int tempMin = static_cast<int>(std::round(tempMinD));
+    forecastData.setTempMin(tempMin);
     int tempMax = static_cast<int>(std::round(tempMaxD));
+    forecastData.setTempMax(tempMax);
     qDebug() << "Min: " << tempMin << " Max: " << tempMax;
+
+    m_weatherData->addForecastData(forecastData);
 }
 
 void Weather::updateWeather()
