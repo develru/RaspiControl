@@ -56,8 +56,12 @@ public:
     std::vector<WeatherForecastData> forecastData() const;
     void addForecastData(const WeatherForecastData &weatherForecast);
 
+    bool isForecastDataRecived() const;
+
+
 private:
     bool m_isDataRecived;
+    bool m_isForecastRecived;
     std::string m_locationName;
     int m_temperature;
     std::string m_description;

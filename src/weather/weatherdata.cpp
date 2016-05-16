@@ -61,8 +61,12 @@ void WeatherForecastData::setTime(int time)
     m_time = time;
 }
 
+
+// ============== Weather Data ===============
+
 WeatherData::WeatherData() :
     m_isDataRecived(false),
+    m_isForecastRecived(false),
     m_locationName(""),
     m_temperature(0),
     m_description(""),
@@ -130,6 +134,15 @@ std::vector<WeatherForecastData> WeatherData::forecastData() const
 
 void WeatherData::addForecastData(const WeatherForecastData &weatherForecast)
 {
+    if (!m_isForecastRecived) {
+        m_isForecastRecived = true;
+    }
     m_forecastData.push_back(weatherForecast);
 }
+
+bool WeatherData::isForecastDataRecived() const
+{
+    return m_isForecastRecived;
+}
+
 

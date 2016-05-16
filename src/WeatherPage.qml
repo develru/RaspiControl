@@ -33,5 +33,10 @@ Item {
             font.pointSize: 18
             anchors.horizontalCenter: parent.horizontalCenter
         }
+        Column {
+            Label {
+                text: weather.forecastList[0]
+            }
+        }
     }
 }

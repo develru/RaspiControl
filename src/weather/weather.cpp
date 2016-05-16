@@ -53,6 +53,17 @@ QString Weather::icon() const
     return QString::fromStdString(m_weatherData->icon());
 }
 
+QStringList Weather::forecastList() const
+{
+    QStringList list;
+    if (m_weatherData->isForecastDataRecived()) {
+        WeatherForecastData forecastD = m_weatherData->forecastData()[0];
+        list.append(QString::number(forecastD.time()));
+    }
+    return list;
+}
+
+
 void Weather::requestWeatherData()
 {
     QString apiCall =
@@ -144,6 +155,8 @@ void Weather::readForecastData(const QJsonObject& jsonObj)
     qDebug() << "Min: " << tempMin << " Max: " << tempMax;
 
     m_weatherData->addForecastData(forecastData);
+
+    emit weatherChanged();
 }
 
 void Weather::updateWeather()
