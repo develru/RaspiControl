@@ -34,10 +34,12 @@ signals:
 
 public slots:
     void weatherDataRecived();
+    void forecastDataRecived();
     void updateWeather();
 
 private:
     void readData(const QJsonObject& jsonObj);
+    void readForecastData(const QJsonObject& jsonObj);
     void requestWeatherData();
 
     std::unique_ptr<QNetworkAccessManager> m_manager;
@@ -47,6 +49,7 @@ private:
 //    WeatherData* m_weatherData;
     std::unique_ptr<QTimer> m_timer;
     QNetworkReply* currentWeather;
+    QNetworkReply* forecast;
 
 };
 

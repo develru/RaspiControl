@@ -4,6 +4,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonArray>
 #include <QtCore/QTextStream>
+#include <QtCore/QDateTime>
 #include <cmath>
 #include "weather.h"
 using namespace weather;
@@ -61,6 +62,12 @@ void Weather::requestWeatherData()
     QNetworkRequest requestCurrentWeather(apiCall);
     currentWeather = m_manager->get(requestCurrentWeather);
     connect(currentWeather, SIGNAL(finished()), this, SLOT(weatherDataRecived()));
+
+    QString apiCallForecast =
+            QString("http://api.openweathermap.org/data/2.5/forecast/daily?q=Dachau,de&cnt=3&units=metric&APPID=%1").arg(m_apiKey);
+    QNetworkRequest requestForecast(apiCallForecast);
+    forecast = m_manager->get(requestForecast);
+    connect(forecast, SIGNAL(finished()), this, SLOT(forecastDataRecived()));
 }
 
 void Weather::weatherDataRecived()
@@ -70,6 +77,17 @@ void Weather::weatherDataRecived()
     readData(jsonDoc.object());
     currentWeather->deleteLater();
 }
+
+void Weather::forecastDataRecived()
+{
+    qDebug() << "Forecast data recived!";
+
+    QString jsonForecastStr(forecast->readAll());
+    QJsonDocument jsonForecastDoc = QJsonDocument::fromJson(jsonForecastStr.toStdString().c_str());
+    readForecastData(jsonForecastDoc.object());
+    forecast->deleteLater();
+}
+
 
 void Weather::readData(const QJsonObject &jsonObj)
 {
@@ -97,6 +115,30 @@ void Weather::readData(const QJsonObject &jsonObj)
     qDebug() << "Weather data recived";
 }
 
+void Weather::readForecastData(const QJsonObject& jsonObj)
+{
+    QJsonArray jsonList = jsonObj["list"].toArray();
+    QJsonObject jsonListObj = jsonList[0].toObject();
+    // time
+    int time = jsonListObj["dt"].toInt();
+    QDateTime dt = QDateTime::fromTime_t(time);
+    qDebug() << dt.toString();
+
+    // description
+    QJsonArray weatherArr = jsonListObj["weather"].toArray();
+    QJsonObject weatherObject = weatherArr[0].toObject();
+    std::string desc = weatherObject["description"].toString().toStdString();
+    qDebug() << QString::fromStdString(desc);
+
+    // max/min
+    QJsonObject temp = jsonListObj["temp"].toObject();
+    double tempMinD = temp["min"].toDouble();
+    double tempMaxD = temp["max"].toDouble();
+    int tempMin = static_cast<int>(std::round(tempMinD));
+    int tempMax = static_cast<int>(std::round(tempMaxD));
+    qDebug() << "Min: " << tempMin << " Max: " << tempMax;
+}
+
 void Weather::updateWeather()
 {
     requestWeatherData();
@@ -114,4 +156,3 @@ void Weather::viewIsReaddy()
     requestWeatherData();
     m_timer->start(3600000);
 }
-
