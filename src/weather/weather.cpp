@@ -14,8 +14,8 @@ Weather::Weather(QObject *parent) :
     m_weatherData(new WeatherData()),
     m_timer(new QTimer(this))
 {
-    connect(m_manager.get(), SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(weatherDataRecived(QNetworkReply*)));
+//    connect(m_manager.get(), SIGNAL(finished(QNetworkReply*)),
+//            this, SLOT(weatherDataRecived(QNetworkReply*)));
 
     connect(m_timer.get(), SIGNAL(timeout()), this, SLOT(updateWeather()));
 
@@ -56,15 +56,19 @@ void Weather::requestWeatherData()
 {
     QString apiCall =
             QString("http://api.openweathermap.org/data/2.5/weather?q=Dachau,de&units=metric&APPID=%1").arg(m_apiKey);
-    m_manager->get(QNetworkRequest(QUrl(apiCall)));
+    //m_manager->get(QNetworkRequest(QUrl(apiCall)));
+
+    QNetworkRequest requestCurrentWeather(apiCall);
+    currentWeather = m_manager->get(requestCurrentWeather);
+    connect(currentWeather, SIGNAL(finished()), this, SLOT(weatherDataRecived()));
 }
 
-void Weather::weatherDataRecived(QNetworkReply* networkReply)
+void Weather::weatherDataRecived()
 {
-    QString jsonStr(networkReply->readAll());
+    QString jsonStr(currentWeather->readAll());
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonStr.toStdString().c_str());
     readData(jsonDoc.object());
-    networkReply->deleteLater();
+    currentWeather->deleteLater();
 }
 
 void Weather::readData(const QJsonObject &jsonObj)

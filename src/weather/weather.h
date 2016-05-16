@@ -28,12 +28,12 @@ public:
     QString icon() const;
     Q_INVOKABLE void viewIsReaddy();
     Q_INVOKABLE void stopTimer();
-    
+
 signals:
     void weatherChanged();
 
 public slots:
-    void weatherDataRecived(QNetworkReply* networkReply);
+    void weatherDataRecived();
     void updateWeather();
 
 private:
@@ -46,6 +46,7 @@ private:
     std::unique_ptr<WeatherData> m_weatherData;
 //    WeatherData* m_weatherData;
     std::unique_ptr<QTimer> m_timer;
+    QNetworkReply* currentWeather;
 
 };
 
