@@ -59,6 +59,7 @@ QStringList Weather::forecastList() const
     if (m_weatherData->isForecastDataRecived()) {
         WeatherForecastData forecastD = m_weatherData->forecastData()[0];
         list.append(QString::number(forecastD.time()));
+        list.append(QString::number(forecastD.tempMax()));
     }
     return list;
 }

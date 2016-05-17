@@ -3,22 +3,23 @@ import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.3
 
 Item {
-    GridLayout {
-        id: grid
-        columns: 2
+    id: mainItem
+//    anchors.fill: parent
+    Row {
+        spacing: 15
         Column {
-	    Layout.column: 0
+            id: currentWeather
+            width: mainItem.width / 2
             Component.onCompleted: weather.viewIsReaddy()
             Component.onDestruction: if (weather != null)
-                                         weather.stopTimer()
-            anchors.centerIn: parent
+            weather.stopTimer()
             spacing: 15
 
             Image {
-                source: weather.icon
                 height: 200
                 width: 200
-                //            antialiasing: true
+                anchors.horizontalCenter: parent.horizontalCenter
+                source: weather.icon
             }
             Label {
                 text: weather.temp + "°C"
@@ -41,10 +42,11 @@ Item {
             }
         }
 
-        Column {
-	    Layout.column: 1
-            Label {
-                text: weather.forecastList[0]
+        ListView {
+            anchors.left: currentWeather.right
+            model: weather.forecastList
+            delegate: Label {
+                text: modelData
             }
         }
     }
