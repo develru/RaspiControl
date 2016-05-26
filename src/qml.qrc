@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>WeatherPage.qml</file>
         <file>CameraPage.qml</file>
+        <file>MyLabel.qml</file>
     </qresource>
 </RCC>

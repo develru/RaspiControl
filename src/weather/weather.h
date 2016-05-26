@@ -7,7 +7,9 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtCore/QTimer>
 #include <QtCore/QStringList>
+#include <QAbstractListModel>
 #include "weatherdata.h"
+#include "forecastdatamodell.h"
 
 namespace weather {
 
@@ -18,22 +20,27 @@ class Weather : public QObject
     Q_PROPERTY(QString description READ description NOTIFY weatherChanged)
     Q_PROPERTY(QString temp READ temp NOTIFY weatherChanged)
     Q_PROPERTY(QString icon READ icon NOTIFY weatherChanged)
-    Q_PROPERTY(QStringList forecastList READ forecastList NOTIFY weatherChanged)
+    Q_PROPERTY(ForecastDataModell *dataModel READ dataModel NOTIFY modelChanged)
+    Q_PROPERTY(QString lastUpdateTime READ lastUpdateTime NOTIFY lastUpdateTimeChanged)
 
 public:
     explicit Weather(QObject *parent = 0);
-//    ~Weather();
+    ~Weather();
 
     QString location() const;
     QString description() const;
     QString temp() const;
     QString icon() const;
-    QStringList forecastList() const;
+    QList<WeatherForecastData *> forecastList() const;
     Q_INVOKABLE void viewIsReaddy();
     Q_INVOKABLE void stopTimer();
+    ForecastDataModell *dataModel();
+    QString lastUpdateTime() const;
 
 signals:
     void weatherChanged();
+    void modelChanged();
+    void lastUpdateTimeChanged(QString lastUpdateTime);
 
 public slots:
     void weatherDataRecived();
@@ -53,7 +60,9 @@ private:
     std::unique_ptr<QTimer> m_timer;
     QNetworkReply* currentWeather;
     QNetworkReply* forecast;
-
+    QList<WeatherForecastData*> m_forecastDataList;
+    ForecastDataModell* m_dataModel;
+    QString m_lastUpdateTime;
 };
 
 }

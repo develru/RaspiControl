@@ -2,68 +2,6 @@
 
 using namespace weather;
 
-WeatherForecastData::WeatherForecastData() :
-    m_tempMin(0),
-    m_tempMax(0),
-    m_time(0),
-    m_description(""),
-    m_icon("")
-{
-}
-
-int WeatherForecastData::tempMax() const
-{
-    return m_tempMax;
-}
-
-int WeatherForecastData::tempMin() const
-{
-    return m_tempMin;
-}
-
-int WeatherForecastData::time() const
-{
-    return m_time;
-}
-
-std::string WeatherForecastData::description() const
-{
-    return  m_description;
-}
-
-std::string WeatherForecastData::icon() const
-{
-    return m_icon;
-}
-
-void WeatherForecastData::setDescription(const std::string &description)
-{
-    m_description = description;
-}
-
-void WeatherForecastData::setIcon(const std::string &icon)
-{
-    m_icon = icon;
-}
-
-void WeatherForecastData::setTempMax(int tempMax)
-{
-    m_tempMax = tempMax;
-}
-
-void WeatherForecastData::setTempMin(int tempMin)
-{
-    m_tempMin = tempMin;
-}
-
-void WeatherForecastData::setTime(int time)
-{
-    m_time = time;
-}
-
-
-// ============== Weather Data ===============
-
 WeatherData::WeatherData() :
     m_isDataRecived(false),
     m_isForecastRecived(false),
@@ -127,12 +65,12 @@ void WeatherData::setIcon(const std::string &icon)
     m_icon = icon;
 }
 
-std::vector<WeatherForecastData> WeatherData::forecastData() const
+std::vector<WeatherForecastData *> WeatherData::forecastData() const
 {
     return m_forecastData;
 }
 
-void WeatherData::addForecastData(const WeatherForecastData &weatherForecast)
+void WeatherData::addForecastData(WeatherForecastData *weatherForecast)
 {
     if (!m_isForecastRecived) {
         m_isForecastRecived = true;
@@ -144,5 +82,3 @@ bool WeatherData::isForecastDataRecived() const
 {
     return m_isForecastRecived;
 }
-
-

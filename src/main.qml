@@ -48,6 +48,19 @@ ApplicationWindow {
         }
     }
 
+    statusBar: StatusBar {
+        style: StatusBarStyle {
+            background: Rectangle {
+//                implicitWidth: mainWin.width
+//                implicitHeight: 40
+                color: mainWin.toolBarColor
+            }
+        }
+        MyLabel {
+            text: "Last update: " + weather.lastUpdateTime
+        }
+    }
+
     StackView {
         id: stackView
         anchors.fill: parent

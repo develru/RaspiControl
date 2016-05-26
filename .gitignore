@@ -75,3 +75,4 @@ api.txt
 build*/
 .ropeproject/
 *.txt.user*
+src/weather_img/

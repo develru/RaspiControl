@@ -3,36 +3,9 @@
 
 #include <string>
 #include <vector>
+#include "weatherforecastdata.h"
 
 namespace weather {
-
-class WeatherForecastData
-{
-public:
-    WeatherForecastData();
-
-    int tempMin() const;
-    void setTempMin(int tempMin);
-
-    int tempMax() const;
-    void setTempMax(int tempMax);
-
-    int time() const;
-    void setTime(int time);
-
-    std::string description() const;
-    void setDescription(const std::string &description);
-
-    std::string icon() const;
-    void setIcon(const std::string &icon);
-
-private:
-    int m_tempMin;
-    int m_tempMax;
-    int m_time;
-    std::string m_description;
-    std::string m_icon;
-};
 
 class WeatherData
 {
@@ -53,8 +26,8 @@ public:
     std::string icon() const;
     void setIcon(const std::string &icon);
 
-    std::vector<WeatherForecastData> forecastData() const;
-    void addForecastData(const WeatherForecastData &weatherForecast);
+    std::vector<WeatherForecastData*> forecastData() const;
+    void addForecastData(WeatherForecastData* weatherForecast);
 
     bool isForecastDataRecived() const;
 
@@ -66,7 +39,7 @@ private:
     int m_temperature;
     std::string m_description;
     std::string m_icon;
-    std::vector<WeatherForecastData> m_forecastData;
+    std::vector<WeatherForecastData*> m_forecastData;
 };
 
 }

@@ -5,6 +5,7 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QTextStream>
 #include <QtCore/QDateTime>
+#include <QQmlContext>
 #include <cmath>
 #include "weather.h"
 using namespace weather;
@@ -13,7 +14,8 @@ Weather::Weather(QObject *parent) :
     QObject(parent),
     m_manager(new QNetworkAccessManager(this)),
     m_weatherData(new WeatherData()),
-    m_timer(new QTimer(this))
+    m_timer(new QTimer(this)),
+    m_dataModel(new ForecastDataModell())
 {
 //    connect(m_manager.get(), SIGNAL(finished(QNetworkReply*)),
 //            this, SLOT(weatherDataRecived(QNetworkReply*)));
@@ -28,10 +30,10 @@ Weather::Weather(QObject *parent) :
     }
 }
 
-//Weather::~Weather()
-//{
-//    delete m_weatherData;
-//}
+Weather::~Weather()
+{
+    delete m_dataModel;
+}
 
 QString Weather::location() const
 {
@@ -53,15 +55,29 @@ QString Weather::icon() const
     return QString::fromStdString(m_weatherData->icon());
 }
 
-QStringList Weather::forecastList() const
+QList<WeatherForecastData *> Weather::forecastList() const
 {
-    QStringList list;
-    if (m_weatherData->isForecastDataRecived()) {
-        WeatherForecastData forecastD = m_weatherData->forecastData()[0];
-        list.append(QString::number(forecastD.time()));
-        list.append(QString::number(forecastD.tempMax()));
-    }
-    return list;
+//    QStringList list;
+//    if (m_weatherData->isForecastDataRecived()) {
+//        auto forecastD = m_weatherData->forecastData();
+//        for (auto frD : forecastD) {
+//            list.append(QString::fromStdString(frD.icon()));
+//            list.append(QString::number(frD.time()));
+//            list.append(QString::number(frD.tempMax()));
+//            list.append(QString::number(frD.tempMin()));
+//            list.append(QString::fromStdString(frD.description()));
+//        }
+//        qDebug() << list;
+//    }
+//    QList<QObject*> list;
+//    if (m_weatherData->isForecastDataRecived()) {
+//        auto forecastD = m_weatherData->forecastData();
+//        for (auto& frD : forecastD) {
+//            list.append(frD);
+//        }
+//    }
+
+    return m_forecastDataList;
 }
 
 
@@ -76,7 +92,7 @@ void Weather::requestWeatherData()
     connect(currentWeather, SIGNAL(finished()), this, SLOT(weatherDataRecived()));
 
     QString apiCallForecast =
-            QString("http://api.openweathermap.org/data/2.5/forecast/daily?q=Dachau,de&cnt=3&units=metric&APPID=%1").arg(m_apiKey);
+            QString("http://api.openweathermap.org/data/2.5/forecast/daily?q=Dachau,de&cnt=4&units=metric&APPID=%1").arg(m_apiKey);
     QNetworkRequest requestForecast(apiCallForecast);
     forecast = m_manager->get(requestForecast);
     connect(forecast, SIGNAL(finished()), this, SLOT(forecastDataRecived()));
@@ -119,45 +135,58 @@ void Weather::readData(const QJsonObject &jsonObj)
     m_weatherData->setDescription(desc);
 
     // icon
-    std::string icon = jsonA[0].toObject()["icon"].toString().toStdString();
-    QString tempIcon = QString("qrc:/img/weather_img/%1.png").arg(QString::fromStdString(icon));
+    QString icon = jsonA[0].toObject()["icon"].toString();
+    QString tempIcon = QString("qrc:/img/weather_img/%1.png").arg(icon);
     m_weatherData->setIcon(tempIcon.toStdString());
     emit weatherChanged();
+
+    m_lastUpdateTime = QDateTime::currentDateTime().toString("h:mm");
+    emit lastUpdateTimeChanged(m_lastUpdateTime);
 
     qDebug() << "Weather data recived";
 }
 
 void Weather::readForecastData(const QJsonObject& jsonObj)
 {
-    WeatherForecastData forecastData;
     QJsonArray jsonList = jsonObj["list"].toArray();
-    QJsonObject jsonListObj = jsonList[0].toObject();
-    // time
-    int time = jsonListObj["dt"].toInt();
-    forecastData.setTime(time);
-    QDateTime dt = QDateTime::fromTime_t(time);
-    qDebug() << dt.toString();
+    int count = jsonList.count();
+    for (int i=0; i<count; i++) {
+        QJsonObject jsonListObj = jsonList[i].toObject();
+        WeatherForecastData* forecastData = new WeatherForecastData();
+        // time
+        int time = jsonListObj["dt"].toInt();
+        forecastData->setTime(time);
+        QDateTime dt = QDateTime::fromTime_t(time);
+        qDebug() << dt.toString("dddd");
 
-    // description
-    QJsonArray weatherArr = jsonListObj["weather"].toArray();
-    QJsonObject weatherObject = weatherArr[0].toObject();
-    std::string desc = weatherObject["description"].toString().toStdString();
-    forecastData.setDescription(desc);
-    qDebug() << QString::fromStdString(desc);
+        // description
+        QJsonArray weatherArr = jsonListObj["weather"].toArray();
+        QJsonObject weatherObject = weatherArr[0].toObject();
+        std::string desc = weatherObject["description"].toString().toStdString();
+        forecastData->setDescription(QString::fromStdString(desc));
+        qDebug() << QString::fromStdString(desc);
+        QString icon = weatherObject["icon"].toString();
+        QString tempIcon = QString("qrc:/img/weather_img/%1.png").arg(icon);
+        forecastData->setIcon(tempIcon);
 
-    // max/min
-    QJsonObject temp = jsonListObj["temp"].toObject();
-    double tempMinD = temp["min"].toDouble();
-    double tempMaxD = temp["max"].toDouble();
-    int tempMin = static_cast<int>(std::round(tempMinD));
-    forecastData.setTempMin(tempMin);
-    int tempMax = static_cast<int>(std::round(tempMaxD));
-    forecastData.setTempMax(tempMax);
-    qDebug() << "Min: " << tempMin << " Max: " << tempMax;
+        // max/min
+        QJsonObject temp = jsonListObj["temp"].toObject();
+        double tempMinD = temp["min"].toDouble();
+        double tempMaxD = temp["max"].toDouble();
+        int tempMin = static_cast<int>(std::round(tempMinD));
+        forecastData->setTempMin(tempMin);
+        int tempMax = static_cast<int>(std::round(tempMaxD));
+        forecastData->setTempMax(tempMax);
+        qDebug() << "Min: " << tempMin << " Max: " << tempMax;
 
-    m_weatherData->addForecastData(forecastData);
+        m_forecastDataList.append(forecastData);
+    }
 
-    emit weatherChanged();
+    m_dataModel->setAllData(m_forecastDataList);
+
+    emit modelChanged();
+
+//    QQmlContext::setContextProperty("forecastModel", QVariant::fromValue(m_forecastDataList));
 }
 
 void Weather::updateWeather()
@@ -170,6 +199,16 @@ void Weather::stopTimer()
 {
     m_timer->stop();
     qDebug() << "Stop Timer";
+}
+
+ForecastDataModell* Weather::dataModel()
+{
+    return m_dataModel;
+}
+
+QString Weather::lastUpdateTime() const
+{
+    return m_lastUpdateTime;
 }
 
 void Weather::viewIsReaddy()

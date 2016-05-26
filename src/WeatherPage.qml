@@ -4,15 +4,17 @@ import QtQuick.Layouts 1.3
 
 Item {
     id: mainItem
-//    anchors.fill: parent
+    //    anchors.fill: parent
+
     Row {
+        id: mainRow
         spacing: 15
         Column {
             id: currentWeather
             width: mainItem.width / 2
             Component.onCompleted: weather.viewIsReaddy()
             Component.onDestruction: if (weather != null)
-            weather.stopTimer()
+                                         weather.stopTimer()
             spacing: 15
 
             Image {
@@ -21,20 +23,20 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 source: weather.icon
             }
-            Label {
+            MyLabel {
                 text: weather.temp + "°C"
                 font.bold: true
                 font.pointSize: 22
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 
-            Label {
+            MyLabel {
                 text: weather.description
                 font.pointSize: 18
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 
-            Label {
+            MyLabel {
                 text: weather.location
                 font.italic: true
                 font.pointSize: 18
@@ -42,11 +44,43 @@ Item {
             }
         }
 
-        ListView {
+        Component {
+            id: forecastDelegate
+            Row {
+                spacing: 10
+                Image {
+                    source: model.icon
+                    width: 50
+                    height: 50
+//                    anchors.rightMargin: 10
+                }
+                Column {
+                    MyLabel {
+                        text: model.temp
+                    }
+                    MyLabel {
+                        text: model.description
+                    }
+                    MyLabel {
+                        anchors.bottomMargin: 10
+                        text: model.time
+                    }
+                }
+            }
+        }
+
+        //        }
+        Column {
+            width: mainItem.width / 2
+            height: mainItem.height
             anchors.left: currentWeather.right
-            model: weather.forecastList
-            delegate: Label {
-                text: modelData
+            ListView {
+                spacing: 10
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width
+                height: 4*60
+                model: weather.dataModel
+                delegate: forecastDelegate
             }
         }
     }
