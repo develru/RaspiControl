@@ -7,7 +7,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtCore/QTimer>
 #include <QtCore/QStringList>
-#include <QAbstractListModel>
+#include <QtCore/QAbstractListModel>
 #include "weatherdata.h"
 #include "forecastdatamodell.h"
 
@@ -31,7 +31,7 @@ public:
     QString description() const;
     QString temp() const;
     QString icon() const;
-    QList<WeatherForecastData *> forecastList() const;
+    QList<WeatherForecastData*> forecastList() const;
     Q_INVOKABLE void viewIsReaddy();
     Q_INVOKABLE void stopTimer();
     ForecastDataModell *dataModel();

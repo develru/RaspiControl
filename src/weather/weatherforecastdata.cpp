@@ -2,7 +2,7 @@
 
 using namespace weather;
 
-WeatherForecastData::WeatherForecastData(QObject *parent) : QObject(parent),
+WeatherForecastData::WeatherForecastData() :
     m_tempMin(0),
     m_tempMax(0),
     m_time(0),
@@ -37,22 +37,12 @@ QString WeatherForecastData::icon() const
     return m_icon;
 }
 
-void WeatherForecastData::emitAllSignals()
-{
-    emit tempMinChanged(m_tempMin);
-    emit tempMaxChanged(m_tempMax);
-    emit timeChanged(m_time);
-    emit descriptionChanged(m_description);
-    emit iconChanged(m_icon);
-}
-
 void WeatherForecastData::setTempMin(int tempMin)
 {
     if (m_tempMin == tempMin)
         return;
 
     m_tempMin = tempMin;
-    emit tempMinChanged(tempMin);
 }
 
 void WeatherForecastData::setTempMax(int tempMax)
@@ -61,7 +51,6 @@ void WeatherForecastData::setTempMax(int tempMax)
         return;
 
     m_tempMax = tempMax;
-    emit tempMaxChanged(tempMax);
 }
 
 void weather::WeatherForecastData::setTime(int time)
@@ -70,7 +59,6 @@ void weather::WeatherForecastData::setTime(int time)
         return;
 
     m_time = time;
-    emit timeChanged(time);
 }
 
 void WeatherForecastData::setDescription(QString description)
@@ -79,7 +67,6 @@ void WeatherForecastData::setDescription(QString description)
         return;
 
     m_description = description;
-    emit descriptionChanged(description);
 }
 
 void WeatherForecastData::setIcon(QString icon)
@@ -88,5 +75,4 @@ void WeatherForecastData::setIcon(QString icon)
         return;
 
     m_icon = icon;
-    emit iconChanged(icon);
 }

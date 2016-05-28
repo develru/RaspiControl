@@ -12,6 +12,7 @@ add_definitions(
 IF(CMAKE_CROSSCOMPILING)
     set(CMAKE_PREFIX_PATH /home/rschwalk/dev/tools/raspi/qt5pi/)
     set(CMAKE_FIND_ROOT_PATH /home/rschwalk/dev/tools/raspi/qt5pi/)
+    set(CMAKE_INSTALL_PREFIX /home/pi/prg)
 ENDIF(CMAKE_CROSSCOMPILING)
 IF(NOT CMAKE_CROSSCOMPILING)
     set(CMAKE_PREFIX_PATH /home/rschwalk/dev/tools/Qt/5.6/gcc_64/)

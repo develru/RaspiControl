@@ -2,8 +2,8 @@
 #include <QtCore/QString>
 #include "forecastdatamodell.h"
 
-#include <QColor>
-#include <QDateTime>
+#include <QtGui/QColor>
+#include <QtCore/QDateTime>
 
 ForecastDataModell::ForecastDataModell(QObject *parent) :
     QAbstractListModel(parent)

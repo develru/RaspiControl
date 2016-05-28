@@ -5,7 +5,7 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QTextStream>
 #include <QtCore/QDateTime>
-#include <QQmlContext>
+//#include <QQmlContext>
 #include <cmath>
 #include "weather.h"
 using namespace weather;
@@ -55,28 +55,8 @@ QString Weather::icon() const
     return QString::fromStdString(m_weatherData->icon());
 }
 
-QList<WeatherForecastData *> Weather::forecastList() const
+QList<WeatherForecastData*> Weather::forecastList() const
 {
-//    QStringList list;
-//    if (m_weatherData->isForecastDataRecived()) {
-//        auto forecastD = m_weatherData->forecastData();
-//        for (auto frD : forecastD) {
-//            list.append(QString::fromStdString(frD.icon()));
-//            list.append(QString::number(frD.time()));
-//            list.append(QString::number(frD.tempMax()));
-//            list.append(QString::number(frD.tempMin()));
-//            list.append(QString::fromStdString(frD.description()));
-//        }
-//        qDebug() << list;
-//    }
-//    QList<QObject*> list;
-//    if (m_weatherData->isForecastDataRecived()) {
-//        auto forecastD = m_weatherData->forecastData();
-//        for (auto& frD : forecastD) {
-//            list.append(frD);
-//        }
-//    }
-
     return m_forecastDataList;
 }
 
@@ -85,7 +65,6 @@ void Weather::requestWeatherData()
 {
     QString apiCall =
             QString("http://api.openweathermap.org/data/2.5/weather?q=Dachau,de&units=metric&APPID=%1").arg(m_apiKey);
-    //m_manager->get(QNetworkRequest(QUrl(apiCall)));
 
     QNetworkRequest requestCurrentWeather(apiCall);
     currentWeather = m_manager->get(requestCurrentWeather);
@@ -126,7 +105,6 @@ void Weather::readData(const QJsonObject &jsonObj)
     // temperature
     double tDo = jsonObj["main"].toObject()["temp"].toDouble();
     int temp = static_cast<int>(std::round(tDo));
-//    int temp = jsonObj["main"].toObject()["temp"].toInt();
     m_weatherData->setTemperature(temp);
 
     // description
@@ -150,6 +128,7 @@ void Weather::readForecastData(const QJsonObject& jsonObj)
 {
     QJsonArray jsonList = jsonObj["list"].toArray();
     int count = jsonList.count();
+    m_forecastDataList.clear();
     for (int i=0; i<count; i++) {
         QJsonObject jsonListObj = jsonList[i].toObject();
         WeatherForecastData* forecastData = new WeatherForecastData();
@@ -185,8 +164,6 @@ void Weather::readForecastData(const QJsonObject& jsonObj)
     m_dataModel->setAllData(m_forecastDataList);
 
     emit modelChanged();
-
-//    QQmlContext::setContextProperty("forecastModel", QVariant::fromValue(m_forecastDataList));
 }
 
 void Weather::updateWeather()
