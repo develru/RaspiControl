@@ -71,6 +71,10 @@ Thumbs.db
 *.dll
 *.exe
 
+# Kdevelop files
+.kdev4/
+*.kdev4
+
 api.txt
 build*/
 .ropeproject/

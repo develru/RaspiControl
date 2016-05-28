@@ -51,8 +51,6 @@ ApplicationWindow {
     statusBar: StatusBar {
         style: StatusBarStyle {
             background: Rectangle {
-//                implicitWidth: mainWin.width
-//                implicitHeight: 40
                 color: mainWin.toolBarColor
             }
         }

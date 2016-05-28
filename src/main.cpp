@@ -1,7 +1,7 @@
 #include <QtWidgets/QApplication>
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
-#include <QtQml>
+//#include <QtQml>
 //#include <QtGui>
 #include "weather/weather.h"
 #include "weather/weatherdata.h"

@@ -1,5 +1,5 @@
-#include <QDebug>
-#include <QString>
+#include <QtCore/QDebug>
+#include <QtCore/QString>
 #include "forecastdatamodell.h"
 
 #include <QColor>
@@ -46,6 +46,7 @@ QVariant ForecastDataModell::data(const QModelIndex &index, int role) const
 void ForecastDataModell::setAllData(const QList<weather::WeatherForecastData *> &data)
 {
     emit beginResetModel();
+    m_data.clear();
     m_data = data;
     emit endResetModel();
 }

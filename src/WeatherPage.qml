@@ -6,6 +6,10 @@ Item {
     id: mainItem
     //    anchors.fill: parent
 
+//    GridLayout {
+//
+//    }
+
     Row {
         id: mainRow
         spacing: 15
@@ -69,7 +73,6 @@ Item {
             }
         }
 
-        //        }
         Column {
             width: mainItem.width / 2
             height: mainItem.height

@@ -1,7 +1,7 @@
 #ifndef FORECASTDATAMODELL_H
 #define FORECASTDATAMODELL_H
 
-#include <QAbstractListModel>
+#include <QtCore/QAbstractListModel>
 #include "weatherforecastdata.h"
 
 class ForecastDataModell : public QAbstractListModel
