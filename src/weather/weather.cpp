@@ -100,6 +100,11 @@ void Weather::readData(const QJsonObject &jsonObj)
 {
     // location
     std::string name = jsonObj["name"].toString().toStdString();
+    if (name == "") {
+        std::string message = jsonObj["message"].toString().toStdString();
+        m_weatherData->setLocationName(message);
+        return;
+    }
     m_weatherData->setLocationName(name);
 
     // temperature

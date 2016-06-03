@@ -39,6 +39,12 @@ ApplicationWindow {
             onClicked: stackView.pop()
         }
 
+        MyLabel {
+            anchors.centerIn: parent
+            font.pixelSize: 24
+            text: "Test"
+        }
+
         ToolButton {
             style: myButtonStyle
             height: parent.height
