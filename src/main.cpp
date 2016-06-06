@@ -6,6 +6,7 @@
 #include "weather/weather.h"
 #include "weather/weatherdata.h"
 #include "weather/forecastdatamodell.h"
+#include "time/currenttime.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +15,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     weather::Weather weat;
     engine.rootContext()->setContextProperty("weather", &weat);
+    timespace::CurrentTime cTime;
+    engine.rootContext()->setContextProperty("curtime", &cTime);
 //    qmlRegisterType<ForecastDataModell>("org.weatherdata", 1, 0, "ForecastDataModell");
 //    QList<QObject*> myModelList = weat.forecastList();
 //    engine.rootContext()->setContextProperty("forecastModel", QVariant::fromValue(myModelList));

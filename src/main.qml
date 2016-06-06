@@ -42,7 +42,7 @@ ApplicationWindow {
         MyLabel {
             anchors.centerIn: parent
             font.pixelSize: 24
-            text: "Test"
+            text: curtime.time
         }
 
         ToolButton {
