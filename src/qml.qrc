@@ -4,5 +4,7 @@
         <file>WeatherPage.qml</file>
         <file>CameraPage.qml</file>
         <file>MyLabel.qml</file>
+        <file>WeatherForecast.qml</file>
+        <file>WeatherForecastForm.ui.qml</file>
     </qresource>
 </RCC>

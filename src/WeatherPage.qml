@@ -13,7 +13,7 @@ Item {
         Rectangle {
             anchors.fill: parent
             color: "blue"
-        }
+
         //anchors.fill: parent
         ColumnLayout {
             id: currentWeather
@@ -95,6 +95,7 @@ Item {
                 delegate: forecastDelegate
             }
         }
+    }
 
     }
 
