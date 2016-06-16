@@ -6,14 +6,3 @@ Label {
     property string textColor: "white" //"#6ac3b2"
     color: textColor
 }
-
-//Item {
-//    id: myLabel
-//    property string textColor: "#6ac3b2"
-//    property alias text: label.text
-//    property alias font: label.font
-//    Label {
-//        id: label
-//        color: textColor
-//    }
-//}

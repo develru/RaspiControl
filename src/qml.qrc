@@ -6,5 +6,8 @@
         <file>MyLabel.qml</file>
         <file>WeatherForecast.qml</file>
         <file>WeatherForecastForm.ui.qml</file>
+        <file>Background.qml</file>
+        <file>ForecastDelegate.qml</file>
+        <file>ForecastDelegateForm.ui.qml</file>
     </qresource>
 </RCC>
